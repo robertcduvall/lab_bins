@@ -11,7 +11,9 @@ import java.util.Scanner;
  */
 public class Bins {
     public static final String DATA_FILE = "example.txt";
-
+    public int total;
+    PriorityQueue<Disk> pq = new PriorityQueue<Disk>();
+    
     /**
      * Reads list of integer data from the given input.
      *
@@ -24,6 +26,27 @@ public class Bins {
             results.add(input.nextInt());
         }
         return results;
+        
+    public void processData(List<Integer> data) {
+        int diskId = 1;
+        total = 0;
+        pq.add(new Disk(0));
+        for (Integer size : data) {
+            Disk d = pq.peek();
+            if (d.freeSpace() > size) {
+                pq.poll();
+                d.add(size);
+                pq.add(d);
+            } else {
+                Disk d2 = new Disk(diskId);
+                diskId++;
+                d2.add(size);
+                pq.add(d2);
+            }
+            total += size;
+        }
+    }
+    
     }
 
     /**
