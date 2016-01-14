@@ -1,7 +1,10 @@
-# lab_bins
-First example code for refactoring
+Bins: Code Critique
+By: Adam Tache (at201) and Aaron Newman (agn9)
 
-Making a change!!!
+	There were a few instances of poor comments in both the Bins.java and Disk.java classes. To begin, the toString method in the Disk class has a comment that does not explain how the disk information is formatted and what information is printed out. Namely, the main class in Bins.java does not actually have a comment explaining what is done in the program. The user can get a general gist of what is done by looking at the print comments while running the program, however, an explanation as a comment would have been useful to explain, in order, what happens when the program is run. 
 
-Even more changes :)
+	There were several instances of code smells in both the classes, as well. We found and removed an instance of dead code in Bins.java, in which two imports were never used (import java.io.File and import java.io.FileNotFoundException). We also found duplicate code in several instances. For example, in constructors in Disk.java, there was duplicate instance variable declarations where the same values were run in two constructors. We considered using a “pull up constructor body” but did not feel making a superclass was necessary or wanted in this situation. Instead, we defined instance variables with a constant default value. We also decided to incorporate a new parameter in the constructors, the capacity of a single disk as a user-defined value. We thought this was a good choice that allows more customizability in the program and could be used for future instances of when this program is needed. 
 
+	Another example of duplicate code was in the main in Bins.java. There were two large for-each loops with identical code besides one line which had > instead of >=. The large block was moved to its own method to be called twice with >= because >= works for both. The first time we call add, we care about the return value (the total, and store the value in our total variable). The second time, we only care about calling the method, not its return value, so we do not set the call equal to any variable. A final example of duplicate code is in the equals method within Disk.java, where a “return false” could just be left at the end and the previous boolean check simply return the result of the boolean check.
+	
+	Finally, we found some edge cases that were missing while testing. For instance, we implemented an out of bounds check for free space in the Disk.java class. Free space can not possibly be a negative value, so if the free space becomes negative, it’s set as zero.
