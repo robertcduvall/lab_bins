@@ -53,11 +53,12 @@ public class Disk implements Comparable<Disk> {
      */
     @Override
     public String toString () {
-        String result = myId + "\t" + freeSpace() + ":\t";
+        StringBuilder sb = new StringBuilder();
+        sb.append(myId + "\t" + freeSpace() + ":\t");
         for (int k = 0; k < myFiles.size(); k++) {
-            result += " " + myFiles.get(k);
+            sb.append(" " + myFiles.get(k));
         }
-        return result;
+        return sb.toString();
     }
 
     /**
@@ -71,14 +72,9 @@ public class Disk implements Comparable<Disk> {
     @Override
     public boolean equals (Object other) {
         if (other != null && other instanceof Disk) {
-            if (myId == ((Disk) other).myId) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
+            return myId == ((Disk) other).myId;
+        } 
+        return false;
     }
 
     /**
@@ -93,14 +89,8 @@ public class Disk implements Comparable<Disk> {
     @Override
     public int compareTo (Disk other) {
         if (other != null) {
-            int result = other.freeSpace() - freeSpace();
-            if (result == 0) {
-                return myId - other.myId;
-            } else {
-                return result;
-            }
-        } else {
-            return -1;
+            return other.freeSpace() - this.freeSpace();
         }
+        return -1;
     }
 }

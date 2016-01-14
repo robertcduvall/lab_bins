@@ -1,5 +1,13 @@
-700000
-200000
-800000
-100000
-150000
+total size = 1.95GB
+
+worst-fit method
+number of pq used: 3
+2	850000:	 150000
+0	100000:	 700000 200000
+1	100000:	 800000 100000
+
+
+worst-fit decreasing method
+number of pq used: 2
+0	50000:	 800000 150000
+1	0:	 700000 200000 100000

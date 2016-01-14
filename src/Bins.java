@@ -1,5 +1,3 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,61 +30,69 @@ public class Bins {
     public static void main (String args[]) {
         Bins b = new Bins();
         Scanner input = new Scanner(Bins.class.getClassLoader().getResourceAsStream(DATA_FILE));
-        List<Integer> data = b.readData(input);
-
+        List<Integer> data = b.readData(input);       
+        System.out.println("total size = " + returnTotal(data) / 1000000.0 + "GB");
+        
+        worstFitMethod(data, false);
+        Collections.sort(data, Collections.reverseOrder());
+        worstFitMethod(data, true);
+    }
+    
+    /**
+     * Conducts the worst-fit bin packing method given an input of file sizes
+     *
+     * @param list of file sizes and whether the the method should be decreasing or not
+     * @return N/A
+     */
+    public static void worstFitMethod(List<Integer> data, Boolean isDecreasing) {
         PriorityQueue<Disk> pq = new PriorityQueue<Disk>();
         pq.add(new Disk(0));
-
         int diskId = 1;
+        for (Integer size : data) {
+            Disk d = pq.peek();
+            boolean decreasingFlag = isDecreasing ? d.freeSpace() >= size : d.freeSpace() > size;
+            if (decreasingFlag) {
+                pq.poll();
+                d.add(size);
+                pq.add(d);
+            } else {
+                Disk d2 = new Disk(diskId);
+                diskId++;
+                d2.add(size);
+                pq.add(d2);
+            }
+        }
+        String name = isDecreasing ? "worst-fit decreasing method" : "worst-fit method";
+        printPQMethodInfo(pq, name);
+    }
+    
+    /**
+     * Prints information about a priority-queue based bin-packing method
+     *
+     * @param The resulting priority queue and the name of the method
+     * @return N/A
+     */
+    public static void printPQMethodInfo(PriorityQueue<Disk> pq, String name) {
+        System.out.println();
+        System.out.println(name);
+        System.out.println("number of pq used: " + pq.size());
+        while (!pq.isEmpty()) {
+            System.out.println(pq.poll());
+        }
+        System.out.println();
+    }
+    
+    /**
+     * Returns the total size specified by a list of file sizes
+     *
+     * @param list of file sizes 
+     * @return the total file size
+     */
+    public static int returnTotal(List<Integer> data) {
         int total = 0;
         for (Integer size : data) {
-            Disk d = pq.peek();
-            if (d.freeSpace() > size) {
-                pq.poll();
-                d.add(size);
-                pq.add(d);
-            } else {
-                Disk d2 = new Disk(diskId);
-                diskId++;
-                d2.add(size);
-                pq.add(d2);
-            }
             total += size;
         }
-
-        System.out.println("total size = " + total / 1000000.0 + "GB");
-        System.out.println();
-        System.out.println("worst-fit method");
-        System.out.println("number of pq used: " + pq.size());
-        while (!pq.isEmpty()) {
-            System.out.println(pq.poll());
-        }
-        System.out.println();
-
-        Collections.sort(data, Collections.reverseOrder());
-        pq.add(new Disk(0));
-
-        diskId = 1;
-        for (Integer size : data) {
-            Disk d = pq.peek();
-            if (d.freeSpace() >= size) {
-                pq.poll();
-                d.add(size);
-                pq.add(d);
-            } else {
-                Disk d2 = new Disk(diskId);
-                diskId++;
-                d2.add(size);
-                pq.add(d2);
-            }
-        }
-
-        System.out.println();
-        System.out.println("worst-fit decreasing method");
-        System.out.println("number of pq used: " + pq.size());
-        while (!pq.isEmpty()) {
-            System.out.println(pq.poll());
-        }
-        System.out.println();
+        return total;
     }
 }
