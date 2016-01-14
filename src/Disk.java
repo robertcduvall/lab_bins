@@ -73,9 +73,8 @@ public class Disk implements Comparable<Disk> {
         if (other != null && other instanceof Disk) {
             if (myId == ((Disk) other).myId) {
                 return true;
-            } else {
+            } else
                 return false;
-            }
         } else {
             return false;
         }
