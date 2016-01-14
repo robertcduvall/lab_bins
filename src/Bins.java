@@ -41,7 +41,7 @@ public class Bins {
         int total = 0;
         for (Integer size : data) {
             Disk d = pq.peek();
-            if (d.freeSpace() > size) {
+            if (d.freeSpace() >= size) {
                 pq.poll();
                 d.add(size);
                 pq.add(d);
