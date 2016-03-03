@@ -26,7 +26,7 @@ public class Bins {
             results.add(input.nextInt());
         }
         return results;
-        
+    }
     public void processData(List<Integer> data) {
         int diskId = 1;
         total = 0;
@@ -47,7 +47,7 @@ public class Bins {
         }
     }
     
-    }
+    
 
     /**
      * The main program.
