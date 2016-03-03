@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Scanner;
+import java.util.function.*;
 
 /**
  * Runs a number of algorithms that try to fit files onto disks.
@@ -24,6 +25,9 @@ public class Bins {
             results.add(input.nextInt());
         }
         return results;
+    }
+    public Object fitDisksandPrint(UnaryOperator operator, List<Integer> list){
+    	return operator.apply(list);
     }
 
     /**
