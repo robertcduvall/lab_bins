@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Represents a collection of files; how many it can hold is limited by its capacity.
@@ -47,7 +48,11 @@ public class Disk implements Comparable<Disk> {
         myFiles.add(filesize);
         mySize += filesize;
     }
-
+    public void fitDisksAndPrint(Function<List<Integer>, List<Integer>> function){
+    	List<Integer> disks = function.apply(myFiles);
+    	disks.stream().sorted();
+    	disks.forEach(System.out::println);
+    }
     /**
      * Converts this disk's information to a string.
      */
@@ -68,17 +73,15 @@ public class Disk implements Comparable<Disk> {
      * @param other disk to compare to this disk
      * @return true iff their values match
      */
-    @Override
-    public boolean equals (Object other) {
-        if (other != null && other instanceof Disk) {
-            if (myId == ((Disk) other).myId) {
+    public boolean equals (Disk other) {
+        if (other == null){
+        	return false;
+        }
+            if (myId == other.myId) {
                 return true;
             } else {
                 return false;
             }
-        } else {
-            return false;
-        }
     }
 
     /**
@@ -92,15 +95,14 @@ public class Disk implements Comparable<Disk> {
      */
     @Override
     public int compareTo (Disk other) {
-        if (other != null) {
+    	if(other == null){
+    		return -1;
+    	}
             int result = other.freeSpace() - freeSpace();
             if (result == 0) {
                 return myId - other.myId;
             } else {
                 return result;
             }
-        } else {
-            return -1;
-        }
     }
 }
