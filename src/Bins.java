@@ -10,28 +10,33 @@ import java.util.Scanner;
  * Runs a number of algorithms that try to fit files onto disks.
  */
 public class Bins {
-    public static final String DATA_FILE = "example.txt";
+	public static final String DATA_FILE = "data/example.txt";
 
-    /**
-     * Reads list of integer data from the given input.
-     *
-     * @param input tied to an input source that contains space separated numbers
-     * @return list of the numbers in the order they were read
-     */
-    public List<Integer> readData (Scanner input) {
-        List<Integer> results = new ArrayList<Integer>();
-        while (input.hasNext()) {
-            results.add(input.nextInt());
-        }
-        return results;
-    }
+	/**
+	 * Reads list of integer data from the given input.
+	 *
+	 * @param input
+	 *            tied to an input source that contains space separated numbers
+	 * @return list of the numbers in the order they were read
+	 */
+	public List<Integer> readData(Scanner input) {
+		List<Integer> results = new ArrayList<Integer>();
+		while (input.hasNext()) {
+			results.add(input.nextInt());
+		}
+		return results;
+	}
 
-    /**
+	public static void fitDisksAndPrint(java.util.function.Consumer<List<Integer>> input, List<Integer> list) {
+		input.accept(list);
+	}
+
+	/**
      * The main program.
      */
     public static void main (String args[]) {
         Bins b = new Bins();
-        Scanner input = new Scanner(Bins.class.getClassLoader().getResourceAsStream(DATA_FILE));
+        Scanner input = new Scanner(DATA_FILE);
         List<Integer> data = b.readData(input);
 
         PriorityQueue<Disk> pq = new PriorityQueue<Disk>();
@@ -64,6 +69,9 @@ public class Bins {
         System.out.println();
 
         Collections.sort(data, Collections.reverseOrder());
+        
+        fitDisksAndPrint(l -> Collections.shuffle(l), data);
+        
         pq.add(new Disk(0));
 
         diskId = 1;
